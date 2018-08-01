@@ -1,0 +1,72 @@
+﻿using OwinTestServerDemo.Core;
+using OwinTestServerDemo.Models;
+using OwinTestServerDemo.Services.Implementations;
+using System;
+using System.Threading.Tasks;
+using System.Web.Http;
+
+namespace OwinTestServerDemo.Controllers
+{
+  public class ResourceController : ApiController
+  {
+    private readonly ResourceService _resourceService;
+
+    public ResourceController()
+    {
+      _resourceService = ResourceService.Instance;
+    }
+
+    [HttpGet]
+    [Route("api/resource/{id}")]
+    [ValidateCredentials]
+    public async Task<IHttpActionResult> GetAsync(string id)
+    {
+      try
+      {
+        Resource resource = await _resourceService.GetAsync(id);
+
+        if (resource == null)
+        {
+          return NotFound();
+        }
+
+        resource.CreatedAt = null;
+        resource.UpdatedAt = null;
+
+        return Ok(resource);
+      }
+<<<<<<< 88731827d5e25d3d461f65d5dbe7cc7edf58571e
+      catch (Exception)
+=======
+      catch (Exception ex)
+>>>>>>> Initial commit
+      {
+        return InternalServerError();
+      }
+    }
+
+    [HttpPost]
+    [Route("api/resource")]
+    [ValidateCredentials]
+    [ValidateModelState]
+    public async Task<IHttpActionResult> PostAsync([FromBody]Resource resource)
+    {
+      try
+      {
+        Resource result = await _resourceService.CreateAsync(resource);
+        resource.CreatedAt = null;
+        resource.UpdatedAt = null;
+
+        return Ok(result);
+      }
+<<<<<<< 88731827d5e25d3d461f65d5dbe7cc7edf58571e
+      catch (Exception)
+=======
+      catch (Exception ex)
+>>>>>>> Initial commit
+      {
+        return InternalServerError();
+      }
+    }
+  }
+}
